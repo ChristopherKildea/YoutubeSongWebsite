@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState  } from "react";
 import { Grid, Paper, Typography, Button, makeStyles, List, ListItem } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 
 
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#121212', 
         height: '100vh',
         width: '20vw',
-        minWidth: '500px'
+        minWidth: '500px',
+        overflow: 'auto'
 
     },
   }));
@@ -85,7 +87,9 @@ function SongList() {
 
         <div>
             <Paper elevation={3} className={paperClass.paper}>
+                <Scrollbars style={{width: "100%", height: "100%"}}>
 
+                
   
                 <List>
                     <ListItem>
@@ -95,7 +99,7 @@ function SongList() {
                             style={{ textTransform: 'none' }}
                             className={classes.button}
                             >
-                            <SearchIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '.9vw'  }} /> Search
+                            <SearchIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '5px'  }} /> Search
                         </Button>
                     </ListItem>
 
@@ -128,6 +132,8 @@ function SongList() {
 
 
                 </List>
+
+                </Scrollbars>
 
 
 
