@@ -1,63 +1,9 @@
-    import React, { useEffect, useState  } from "react";
+    import React, { useEffect, useState, useRef  } from "react";
     import { Paper, Button, makeStyles, List, ListItem } from '@material-ui/core'
     import SearchIcon from '@material-ui/icons/Search';
     import {Scrollbars} from 'react-custom-scrollbars';
 
 
-
-
-
-
-    const useStyles = makeStyles((theme) => ({
-        button: {
-
-      
-   
-            alignItems: 'center', // Align items vertically in the center
-            justifyContent: 'flex-start',
-            backgroundColor: "transparent", // Set the background to transparent
-            fontFamily: 'Montserrat, sans-serif',
-            color: '#CCCCCC',
-            fontWeight: 'bold',
-            width: '100vw',
-            minWidth: '100px',
-            "&:hover": {
-                backgroundColor: 'rgba(157, 157, 157, .2)', // Change background on hover,
-                
-            },
-            '@media (max-width: 1000px)': {
-                padding: '0', // Hide text on extra-small devices
-                height: '100px' 
-            },
-
-
-            
-        },   
-        text: {
-            overflow: 'hidden',
-            whiteSpace: 'nowrap', 
-            textOverflow: 'ellipsis', // the cut off text changes to ... 
-            //[theme.breakpoints.down('sm')]: { //xs
-            '@media (max-width: 1000px)': {
-                display: 'none', // Hide text on extra-small devices
-            },
-        },
-     
-        image: {
-            width: '120px',
-            height: '90px',
-            marginRight: '10px', // Add some space between image and text
-
-           //[theme.breakpoints.down('sm')]: {
-            '@media (max-width: 1000px)': {
-                //width: '60px',
-               // height: '45px', // Hide text on extra-small devices
-                marginRight: '0px',
-                objectFit: 'cover'
-                
-            },
-        },
-    }));
 
 
 
@@ -77,6 +23,75 @@
 
     function SideView() {
 
+        const paperRef = useRef(null); // Step 1: Create a ref for the Paper component
+        const [paperWidth, setPaperWidth] = useState(0); // Step 2: State to store the Paper component's width
+    
+        // Step 3: Effect to measure the Paper component's width
+        useEffect(() => {
+            const updateWidth = () => {
+                if (paperRef.current) {
+                    setPaperWidth(paperRef.current.offsetWidth); // Update the width based on the Paper component
+                }
+            };
+    
+            updateWidth(); // Call once to set initial size
+    
+            window.addEventListener('resize', updateWidth); // Update width on window resize
+            return () => window.removeEventListener('resize', updateWidth); // Cleanup listener
+        }, []); // Empty dependency array means this effect runs once on mount
+    
+
+
+
+        const useStyles = makeStyles((theme) => ({
+            button: {
+
+        
+    
+                alignItems: 'center', // Align items vertically in the center
+                justifyContent: 'flex-start',
+                backgroundColor: "transparent", // Set the background to transparent
+                fontFamily: 'Montserrat, sans-serif',
+                color: '#CCCCCC',
+                fontWeight: 'bold',
+                width: '100vw',
+                minWidth: '100px',
+                "&:hover": {
+                    backgroundColor: 'rgba(157, 157, 157, .2)', // Change background on hover,
+                    
+                },
+                ...(paperWidth <= 150 ? {
+                    padding: '0', // Hide text on extra-small devices
+                    height: '100px' 
+                } : {}),
+
+
+
+                
+            },   
+            text: {
+                overflow: 'hidden',
+                whiteSpace: 'nowrap', 
+                textOverflow: 'ellipsis', // the cut off text changes to ... 
+                //[theme.breakpoints.down('sm')]: { //xs
+                '@media (max-width: 1000px)': {
+                    display: 'none', // Hide text on extra-small devices
+                },
+            },
+        
+            image: {
+                width: '120px',
+                height: '90px',
+                marginRight: '10px',
+                ...(paperWidth <= 150 ? {
+                    marginRight: '0px',
+                    objectFit: 'cover'
+    
+                } : {}),
+        
+            
+            },
+        }));
 
 
         
@@ -117,7 +132,7 @@
 
 
             <div>
-                <Paper elevation={3} className={paperClass.paper}>
+                <Paper elevation={3} className={paperClass.paper} ref={paperRef}>
                     <Scrollbars style={{width: "100%", height: "100%"}}>
 
                     
