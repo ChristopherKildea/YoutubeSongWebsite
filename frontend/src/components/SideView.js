@@ -12,7 +12,7 @@
         button: {
 
       
-            //display: 'flex', // Use flexbox
+   
             alignItems: 'center', // Align items vertically in the center
             justifyContent: 'flex-start',
             backgroundColor: "transparent", // Set the background to transparent
@@ -22,15 +22,23 @@
             width: '100vw',
             minWidth: '100px',
             "&:hover": {
-                backgroundColor: 'rgba(157, 157, 157, .2)' // Change background on hover,
+                backgroundColor: 'rgba(157, 157, 157, .2)', // Change background on hover,
                 
             },
+            '@media (max-width: 1000px)': {
+                padding: '0', // Hide text on extra-small devices
+                height: '100px' 
+            },
+
+
+            
         },   
         text: {
             overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',   
-            [theme.breakpoints.down('xs')]: {
+            whiteSpace: 'nowrap', 
+            textOverflow: 'ellipsis', // the cut off text changes to ... 
+            //[theme.breakpoints.down('sm')]: { //xs
+            '@media (max-width: 1000px)': {
                 display: 'none', // Hide text on extra-small devices
             },
         },
@@ -39,9 +47,14 @@
             width: '120px',
             height: '90px',
             marginRight: '10px', // Add some space between image and text
-            [theme.breakpoints.down('xs')]: {
-                width: '60px',
-                height: '45px', // Hide text on extra-small devices
+
+           //[theme.breakpoints.down('sm')]: {
+            '@media (max-width: 1000px)': {
+                //width: '60px',
+               // height: '45px', // Hide text on extra-small devices
+                marginRight: '0px',
+                objectFit: 'cover'
+                
             },
         },
     }));
@@ -54,7 +67,7 @@
             backgroundColor: '#121212', 
             height: '100vh',
             width: '20vw',
-            minWidth: '120px',
+            minWidth: '150px',
             overflow: 'auto'
 
         },
@@ -117,17 +130,13 @@
                                 style={{ textTransform: 'none' }}
                                 className={classes.button}
                                 >
-                    
-                                    <SearchIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '5px' }} /> <span className={classes.text}>Search</span>
-                           
-                                
+                                    <SearchIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '5px' }} /> <span className={classes.text}>Search</span>                   
                             </Button>
                         </ListItem>
 
 
                         {playlists.map((playlist) => (
                             <ListItem key={playlist.id}>
-
 
                                 <Button 
                         
@@ -141,24 +150,15 @@
                                         src={playlist.picture === "Unknown" ? "https://i.ytimg.com/vi/RbmS3tQJ7Os/default.jpg" : playlist.picture}
                                         className={classes.image}
                                     />
-
-
                                     
                                     <span className={classes.text}>{playlist.name}</span>
 
                                 </Button>
-
-
                             </ListItem>
                         ))}
 
-
                     </List>
-
                     </Scrollbars>
-
-
-
                 </Paper>
 
             </div>
