@@ -14,7 +14,9 @@ def main(request):
 
 class GetSongs(APIView):
     def get(self, request):
-        output = [{"url": output.url, 
+        output = [{
+                    "id": output.id,
+                    "url": output.url, 
                    "title": output.title, 
                    "author": output.author, 
                    "thumbnail": output.thumbnail}

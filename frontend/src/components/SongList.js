@@ -1,148 +1,152 @@
 import React, { Component, useEffect, useState  } from "react";
-import { Grid, Paper, Typography, Button, makeStyles, List, ListItem } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search';
-import {Scrollbars} from 'react-custom-scrollbars';
+import { Grid, Paper, Typography, Button, makeStyles, List, ListItem, Link } from '@material-ui/core'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 
 
+function SongList(props) {
 
 
-
-const useStyles = makeStyles((theme) => ({
-    button: {
-        display: 'flex', // Use flexbox
-        alignItems: 'center', // Align items vertically in the center
-        justifyContent: 'flex-start',
-      backgroundColor: "transparent", // Set the background to transparent
-      fontFamily: 'Montserrat, sans-serif',
-      color: '#CCCCCC',
-      fontWeight: 'bold',
-      width: '100vw',
-      minWidth: '100px',
-      "&:hover": {
-        backgroundColor: 'rgba(157, 157, 157, .2)' // Change background on hover,
-        
-      },
-
-    },
-    image: {
-        width: '120px',
-        height: '90px',
-        marginRight: '10px', // Add some space between image and text
-      },
-  }));
+    const paperStyles = makeStyles((theme) => ({
+        paper: {
+            borderRadius: '10px', 
+            backgroundColor: '#121212', 
+            height: '100vh',
+            width: '20vw',
+            minWidth: '500px',
+            overflow: 'auto'
+    
+        },
+      }));
 
 
-
-  const paperStyles = makeStyles((theme) => ({
-    paper: {
-        borderRadius: '10px', 
-        backgroundColor: '#121212', 
-        height: '100vh',
-        width: '20vw',
-        minWidth: '500px',
-        overflow: 'auto'
-
-    },
-  }));
-
-
-
-function SongList() {
-
-
+      const useStyles = makeStyles((theme) => ({
+        button: {
+            display: 'flex', // Use flexbox
+            alignItems: 'center', // Align items vertically in the center
+            justifyContent: 'flex-start',
+            backgroundColor: "transparent", // Set the background to transparent
+            fontFamily: 'Montserrat, sans-serif',
+            color: '#CCCCCC',
+          fontWeight: 'bold',
+          width: '100vw',
+          minWidth: '100px',
+          "&:hover": {
+            backgroundColor: 'rgba(157, 157, 157, .2)' // Change background on hover,
+            
+          },
+          whiteSpace: 'nowrap'
 
     
-    const [playlists, setPlaylists] = useState([]); 
+        },
+        image: {
+            width: '80px',  
+            height: '60px',
+            marginRight: '10px', // Add some space between image and text
+          },
+        songTitle: {
+            display: 'inline-block',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            maxWidth: '120px',
+            margin: '0 40px'
 
-    useEffect(() => {
-        // Fetch playlists and set them in state
-        fetch('/api/get-playlists')
-          .then((response) => {
-            if (!response.ok) {
-              console.log("Failed to get playlists")
-            }
-            return response.json()
-          })
-          .then((data) => {
-            setPlaylists(data); // Set playlists in state
-          });
-      }, []); 
+        },
+        songAuthor: {
+            display: 'inline-block',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            maxWidth: '120px',
+            margin: '0 20px'
+        }
 
-    const handleSearchClicked = (e) => {
-        console.log("Search has been clicked")
-    };
-
-    const handlePlaylistClicked = (e) => {
-        console.log("Playlist has been clicked")
-    };
+      }));
+    
 
     const classes = useStyles();
     const paperClass = paperStyles()
 
+    const [songs, setSongs] = useState([]); 
+
+    useEffect(() => {
+        // Fetch songs and set them in state
+        fetch('/api/get-songs')
+          .then((response) => {
+            if (!response.ok) {
+              console.log("Failed to get songs")
+            }
+            return response.json()
+          })
+          .then((data) => {
+            setSongs(data); // Set songs in state
+          });
+      }, []); 
 
 
+      const handleSongClicked = (e) => {
+        console.log("Song has been clicked")
+    };
     return (
 
-
+        
         <div>
-            <Paper elevation={3} className={paperClass.paper}>
-                <Scrollbars style={{width: "100%", height: "100%"}}>
+            <Paper elevation={3} className={paperClass.paper}> 
 
-                
-  
                 <List>
-                    <ListItem>
-                        <Button 
-                            variant="contained" 
-                            onClick={handleSearchClicked}
-                            style={{ textTransform: 'none' }}
-                            className={classes.button}
-                            >
-                            <SearchIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '5px'  }} /> Search
-                        </Button>
-                    </ListItem>
+
+                        {songs.map((song) => (
+
+                            <ListItem key={song.id}>
+                        
 
 
-                    {playlists.map((playlist) => (
-                        <ListItem key={playlist.id}>
+                                <Button 
+                        
+                                    variant="contained" 
+                                    onClick={handleSongClicked}
+                                    style={{ textTransform: 'none'}}
+                                    className={classes.button}
+                                    >
+
+                                    <img 
+                                        src={song.thumbnail === "Unknown" ? "https://i.ytimg.com/vi/RbmS3tQJ7Os/default.jpg" : song.thumbnail}
+                                        className={classes.image}
+                                    />
+
+                                    <div>
+                                        <span className={classes.songTitle}>{song.title}</span>
+                                    </div>
+
+                               
+                                    <div>
+                                        <span className={classes.songAuthor}>{song.author}</span>
+                                    </div>
+                              
+
+                                    <Link href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+                                        <MoreHorizIcon style={{ fontSize: 30, color: '#CCCCCC', marginRight: '10px'  }} />
+                                    </Link>
+                                                                        
 
 
-                            <Button 
-                       
-                                variant="contained" 
-                                onClick={handlePlaylistClicked}
-                                style={{ textTransform: 'none'}}
-                                className={classes.button}
-                                >
 
-                                <img 
-                                    src={playlist.picture === "Unknown" ? "https://i.ytimg.com/vi/RbmS3tQJ7Os/default.jpg" : playlist.picture}
-                                    className={classes.image}
-                                />
+                                </Button>
 
 
-                                {playlist.name}
-
-                            </Button>
-
-
-                        </ListItem>
-                    ))}
+                            </ListItem>
+                        ))}
 
 
-                </List>
-
-                </Scrollbars>
-
+                    </List>
 
 
             </Paper>
 
         </div>
-                               
-        
-    )
+    )   
 }
+
 
 export default SongList;

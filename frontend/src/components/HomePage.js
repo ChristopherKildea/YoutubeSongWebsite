@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import SideView from "./SideView";
 import SongList from "./SongList";
+
 import {
     Grid
 }
@@ -15,23 +17,37 @@ function HomePage() {
     };
 
 
+
+
     return (
 
         <div style={pageStyle}>
-            <Grid container spacing={1}>
-                
-                <Grid item xs={12} align="center" style={{ marginTop: '20px', marginLeft: '20px' }}>
+            <Grid container spacing={2}>
+
+        {/*}
+            <Grid item xs={3} md={6} style={{ marginTop: '20px', marginLeft: '20px' }}>
+                    <SideViewTwo />
+            </Grid> */}
+
+    
+                <Grid item xs={3} md={6} style={{ marginTop: '20px', marginLeft: '20px' }}>
+                    <SideView />
+                </Grid>  
+
+
+                {/*
+                <Grid item xs={3} md={5} style={{ marginTop: '20px'}}>
                     <SongList />
-                </Grid>
+                </Grid> */}
+
+
+         
+
+         
+      
             </Grid> 
         
         </div>
-
-
-
-
-
-
 
     )
 }
